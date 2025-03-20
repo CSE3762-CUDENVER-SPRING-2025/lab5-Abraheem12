@@ -1,18 +1,18 @@
 CC = gcc
 
-OBJCS = client4.c 
-OBJCSS = server4.c
+OBJCS = client5.c 
+OBJCSS = server5.c
 
 CFLAGS = -g -Wall
 LIBS = -lcjson -lssl -lcrypto
 
-all: client4 server4
+all: client5 server5
 
-client4: $(OBJCS)
+client5: $(OBJCS)
 	$(CC) $(CFLAGS) -o $@ $(OBJCS) $(LIBS)
 
-server4: $(OBJCSS)
+server5: $(OBJCSS)
 	$(CC) $(CFLAGS) -o $@ $(OBJCSS) $(LIBS)
 
 clean:
-	rm -f client4 server4
+	rm -f client5 server5

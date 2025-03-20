@@ -1,7 +1,7 @@
 /*
 Name: Abraheem Zadron
-Date: March 11, 2025
-Description: Multi-File Chunking and Hashing Client
+Date: March 20, 2025
+Description: Linked list for lab5 client side
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -60,7 +60,6 @@ void process_file(const char *filepath, const char *filename, int sock, struct s
         perror("File open failed");
         return;
     }
-
     // Get file size by reading the entire file
     int file_size = 0;
     unsigned char buffer[BUFFER_SIZE];
@@ -169,7 +168,7 @@ void process_file(const char *filepath, const char *filename, int sock, struct s
     }
     else
     {
-        printf("Sent JSON metadata for %s\n", filename);
+        printf("Sent data for %s\n", filename);
     }
 }
 
@@ -177,14 +176,12 @@ void process_directory(int sock, struct sockaddr_in *server_addr)
 {
     // List of image file names
     char *files[] = {
-        "Agora.jpeg", "AngkorWat.jpeg", "Athens.jpeg", "BangkokRiver.jpeg",
-        "BangkokTemple.jpeg", "IstanbulStreet.jpeg", "OdeonofHerodes.jpeg",
-        "OldBazaar.jpeg", "SiemReapTukTuk.jpeg", "SingaporeHarbor.jpeg",
-        "SydneyBridge.jpeg", "SydneyOperaHouse.jpeg"};
-    int num_files = sizeof(files) / sizeof(files[0]); // Count files
+        "Agora.jpeg"};
+    // Count files
+    int num_files = sizeof(files) / sizeof(files[0]);
     for (int i = 0; i < num_files; i++)
     {
-        char filepath[512]; // Store full file path
+        char filepath[512];
         snprintf(filepath, sizeof(filepath), "%s/%s", ARCHIVE_DIR, files[i]);
 
         process_file(filepath, files[i], sock, server_addr);
@@ -195,10 +192,10 @@ int main(int argc, char *argv[])
 {
     if (argc != 2)
     {
-        fprintf(stderr, "Usage: %s <port>\n", argv[0]);
+        fprintf(stderr, "Error: Port number required.\n");
         exit(1);
     }
-    int port = atoi(argv[1]);
+    int client_port = atoi(argv[1]);
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock < 0)
     {
@@ -208,15 +205,14 @@ int main(int argc, char *argv[])
     struct sockaddr_in server_addr;
     memset(&server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
-    server_addr.sin_port = htons(port);
+    server_addr.sin_port = htons(client_port);
     if (inet_pton(AF_INET, MULTICAST_GROUP, &server_addr.sin_addr) <= 0)
     {
         perror("Invalid multicast IP address");
         exit(1);
     }
-    process_directory(sock, &server_addr);
 
-    printf("I hashed them all.\n");
+    process_directory(sock, &server_addr);
 
     close(sock);
     return 0;

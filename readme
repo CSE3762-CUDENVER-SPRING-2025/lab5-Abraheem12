@@ -1,0 +1,5 @@
+So this for this lab first what I did is that I opened up 4 different terminals on my mac
+In those terminals I had two for server and two for client. When you download my lab 
+you have to just make them and just run ./server5 1111 and that's all same thing for the 
+client side as well just do ./client5 1111 and that's it. Whit this you can run the programs and 
+play with it. In the screenshots I have two servers and two clients set up on different machines.
